@@ -1,0 +1,141 @@
+Anjali Kulshrestha
+Mca -II
+
+
+                                             Data Engineer Assessment
+											 
+											 
+Ques 1:- Create table queries :-
+
+> create table customer(
+                          cust_name varchar(255)    NOT NULL,
+	                      cust_id varchar(18)       primary key,
+                          cust_open_date      date  NOT NULL,
+                          last_cons_date      date  NOT NULL,
+                          vacc_type   varchar(5),
+                          doc_cons    varchar(255)  NOT NULL,
+                          state       varchar(5),
+                          country     varchar(5),
+                          post_code   int(5),
+                          dob         date,
+                          act_cust    varchar(1));
+Query OK, 0 rows affected (0.276 sec)
+
+> desc customer;
++----------------+--------------+------+-----+---------+-------+
+| Field          | Type         | Null | Key | Default | Extra |
++----------------+--------------+------+-----+---------+-------+
+| cust_name      | varchar(255) | NO   |     | NULL    |       |
+| cust_id        | varchar(18)  | NO   | PRI | NULL    |       |
+| cust_open_date | date         | NO   |     | NULL    |       |
+| last_cons_date | date         | NO   |     | NULL    |       |
+| vacc_type      | varchar(5)   | YES  |     | NULL    |       |
+| doc_cons       | varchar(255) | NO   |     | NULL    |       |
+| state          | varchar(5)   | YES  |     | NULL    |       |
+| country        | varchar(5)   | YES  |     | NULL    |       |
+| post_code      | int(5)       | YES  |     | NULL    |       |
+| dob            | date         | YES  |     | NULL    |       |
+| act_cust       | varchar(1)   | YES  |     | NULL    |       |
++----------------+--------------+------+-----+---------+-------+
+11 rows in set (0.09)
+
+LOAD DATA INFILE 'C:\\xampp\\tmp\\php5D45.tmp' INTO TABLE 'customer' FIELDS TERMINATED BY '|' ENCLOSED BY '\"' ESCAPED BY '\\' LINES TERMINATED BY '\r\n'
+
+> select * from customer;
++-----------+---------+----------------+----------------+-----------+----------+-------+---------+-----------+------------+----------+
+| cust_name | cust_id | cust_open_date | last_cons_date | vacc_type | doc_cons | state | country | post_code | dob        | act_cust |
++-----------+---------+----------------+----------------+-----------+----------+-------+---------+-----------+------------+----------+
+| Matt      | 12345   | 2010-10-12     | 2012-10-13     | MVD       | Paul     | BOS   | NYC     |      1180 | 1987-01-09 | A        |
+| Alex      | 123457  | 2010-10-12     | 2012-10-13     | MVD       | Paul     | SA    | USA     |       611 | 1987-06-03 | A        |
+| John      | 123458  | 2010-10-12     | 2012-10-13     | MVD       | Paul     | TN    | IND     |       291 | 1988-05-04 | A        |
+| Mathew    | 123459  | 2010-10-12     | 2012-10-13     | MVD       | Paul     | WAS   | PHIL    |       543 | 1985-02-11 | A        |
+| Jacob     | 1256    | 2010-10-12     | 2012-10-13     | MVD       | Paul     | VIC   | AU      |       981 | 1986-05-10 | A        |
++-----------+---------+----------------+----------------+-----------+----------+-------+---------+-----------+------------+----------+
+
+Ques 2:- Create and script which reads the data from files?
+[Country wise data seperated from customer table.]
+
+> CREATE TABLE cust_nyc
+    -> AS SELECT
+    ->   *
+    -> FROM customer
+    -> WHERE country = 'nyc';
+Query OK, 1 row affected (0.251 sec)
+
+> select * from cust_nyc;
++-----------+---------+----------------+----------------+-----------+----------+-------+---------+-----------+------------+----------+
+| cust_name | cust_id | cust_open_date | last_cons_date | vacc_type | doc_cons | state | country | post_code | dob        | act_cust |
++-----------+---------+----------------+----------------+-----------+----------+-------+---------+-----------+------------+----------+
+| Matt      | 12345   | 2010-10-12     | 2012-10-13     | MVD       | Paul     | BOS   | NYC     |      1180 | 1987-01-09 | A        |
++-----------+---------+----------------+----------------+-----------+----------+-------+---------+-----------+------------+----------+
+1 row in set (0.001 sec)
+
+
+> CREATE TABLE cust_usa
+    ->   AS SELECT
+    ->      *
+    ->   FROM customer
+    ->   WHERE country = 'usa';
+Query OK, 1 row affected (0.242 sec)
+  
+> select * from cust_usa;
++-----------+---------+----------------+----------------+-----------+----------+-------+---------+-----------+------------+----------+
+| cust_name | cust_id | cust_open_date | last_cons_date | vacc_type | doc_cons | state | country | post_code | dob        | act_cust |
++-----------+---------+----------------+----------------+-----------+----------+-------+---------+-----------+------------+----------+
+| Alex      | 123457  | 2010-10-12     | 2012-10-13     | MVD       | Paul     | SA    | USA     |       611 | 1987-06-03 | A        |
++-----------+---------+----------------+----------------+-----------+----------+-------+---------+-----------+------------+----------+
+1 row in set (0.001 sec) 
+
+
+
+> CREATE TABLE cust_ind
+            AS SELECT
+               *
+            FROM customer
+            WHERE country = 'ind';
+Query OK, 1 row affected (0.276 sec)
+
+> select * from cust_ind;
++-----------+---------+----------------+----------------+-----------+----------+-------+---------+-----------+------------+----------+
+| cust_name | cust_id | cust_open_date | last_cons_date | vacc_type | doc_cons | state | country | post_code | dob        | act_cust |
++-----------+---------+----------------+----------------+-----------+----------+-------+---------+-----------+------------+----------+
+| John      | 123458  | 2010-10-12     | 2012-10-13     | MVD       | Paul     | TN    | IND     |       291 | 1988-05-04 | A        |
++-----------+---------+----------------+----------------+-----------+----------+-------+---------+-----------+------------+----------+
+1 row in set (0.001 sec)
+ 
+ 
+> CREATE TABLE cust_phil
+            AS SELECT
+               *
+            FROM customer
+            WHERE country = 'phil';
+Query OK, 1 row affected (0.268 sec)
+
+> select * from cust_phil;
++-----------+---------+----------------+----------------+-----------+----------+-------+---------+-----------+------------+----------+
+| cust_name | cust_id | cust_open_date | last_cons_date | vacc_type | doc_cons | state | country | post_code | dob        | act_cust |
++-----------+---------+----------------+----------------+-----------+----------+-------+---------+-----------+------------+----------+
+| Mathew    | 123459  | 2010-10-12     | 2012-10-13     | MVD       | Paul     | WAS   | PHIL    |       543 | 1985-02-11 | A        |
++-----------+---------+----------------+----------------+-----------+----------+-------+---------+-----------+------------+----------+
+1 row in set (0.001 sec)
+
+
+> CREATE TABLE cust_au
+            AS SELECT
+               *
+            FROM customer
+            WHERE country = 'au';
+Query OK, 1 row affected (0.238 sec)
+
+> select * from cust_au;
++-----------+---------+----------------+----------------+-----------+----------+-------+---------+-----------+------------+----------+
+| cust_name | cust_id | cust_open_date | last_cons_date | vacc_type | doc_cons | state | country | post_code | dob        | act_cust |
++-----------+---------+----------------+----------------+-----------+----------+-------+---------+-----------+------------+----------+
+| Jacob     | 1256    | 2010-10-12     | 2012-10-13     | MVD       | Paul     | VIC   | AU      |       981 | 1986-05-10 | A        |
++-----------+---------+----------------+----------------+-----------+----------+-------+---------+-----------+------------+----------+
+1 row in set (0.001 sec)
+
+
+    
+
+
